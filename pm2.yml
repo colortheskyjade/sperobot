@@ -1,0 +1,4 @@
+apps:
+  script: 'bin/bash'
+  name: 'startbot'
+  args: ['-c', 'pipenv run bot']
