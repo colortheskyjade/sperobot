@@ -2,6 +2,7 @@ import discord
 import google.cloud.logging
 import logging
 import os
+import sys
 
 from config import API_KEY
 from tinydb import TinyDB, Query
@@ -34,6 +35,8 @@ async def set_reaction_msg(message):
   try:
     await message.add_reaction(reaction)
   except:
+    e = sys.exc_info()[0]
+    logger.error(e)
     return
   db.insert({'cmd': 'reaction', 'msg_id': message.id, 
              'reaction': reaction, 'role': role})
@@ -61,6 +64,8 @@ class BotClient(discord.Client):
         try:
           await payload.member.add_roles(role)
         except:
+          e = sys.exc_info()[0]
+          logger.error(e)
           pass
 
   async def on_raw_reaction_remove(self, payload):
@@ -77,6 +82,8 @@ class BotClient(discord.Client):
         if role and member:
             await member.remove_roles(role)
     except:
+      e = sys.exc_info()[0]
+      logger.error(e)
       pass
 
 
